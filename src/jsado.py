@@ -1,3 +1,4 @@
+# https://github.com/lucianogiuseppe/JS-Auto-DeObfuscator
 #!/usr/bin/python
 
 # JS Auto DeObfuscator 0.7.2 by Luciano Giuseppe
