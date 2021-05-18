@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 
 def predict(path, model):
 
-    df = pd.read_csv(path, nrows = 1000)
+    df = pd.read_csv(path)
 
     df = preprocessing(df)
 
