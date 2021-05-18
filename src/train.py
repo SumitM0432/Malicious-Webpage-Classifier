@@ -85,7 +85,7 @@ def eval_model(model, device, data_loader):
 def run(folds, models):
 
     # Importing the dataset
-    df = pd.read_csv(config.TRAINING_FILE, nrows = 1000)
+    df = pd.read_csv(config.TRAINING_FILE)
     df.drop(columns = "Unnamed: 0", inplace = True)
 
     # Preprocessing
