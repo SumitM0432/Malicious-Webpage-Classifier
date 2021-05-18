@@ -5,7 +5,7 @@ EPOCHS = 2
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 LEARNING_RATE = 2e-5
 
-path = '/home/levi/Desktop/Project_10_mal_ben_class/'
+path = '' # add your current folder path
 
 TRAINING_FILE = path + 'input/Webpages_Classification_train_data.csv'
 TESTING_FILE = path + 'input/Webpages_Classification_test_data.csv'
