@@ -16,4 +16,3 @@ tld == 0.12.5
 beautifulsoup4 == 4.9.3
 regex == 2021.4.4
 urllib3 == 1.26.4
-
