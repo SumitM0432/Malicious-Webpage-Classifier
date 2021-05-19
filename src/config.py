@@ -1,7 +1,7 @@
 import torch
 
-BATCH_SIZE = 32
-EPOCHS = 2
+BATCH_SIZE = 128
+EPOCHS = 20
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 LEARNING_RATE = 2e-5
 
