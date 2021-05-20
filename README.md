@@ -6,7 +6,7 @@ Malicious Webpages are the pages that install malware on your system that will d
 The objective of this project is to classify the web pages into two categories *Malicious[Bad]* and *Benign[Good]* webpages.  Exploratory Data Analysis and Geospatial Data Analysis are done to get more insights and knowledge about the data. Features are engineered and the data is preprocessed accordingly. A total of four ML and DL models are trained. The models are **XGBoost**, **Logistic Regression**, **Decision Tree** and **Deep Neural Network**. The DNN is implemented in PyTorch and the others are implemented using scikit learn.
 
 ## Dataset
-The data set is taken from [Mendeley Data]. The dataset contains features like the raw webpage content, geographical location, javascript length, obfuscated JavaScript code of the webpage etc. The Dataset contains around 1.5 million web pages. The description of the whole dataset is given on the link provided.
+The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gdx3pkwp47/2). The dataset contains features like the raw webpage content, geographical location, javascript length, obfuscated JavaScript code of the webpage etc. The Dataset contains around 1.5 million web pages. The description of the whole dataset is given on the link provided.
 
 ## Files
 - **input**: Contains the input files for the project
@@ -24,7 +24,7 @@ The data set is taken from [Mendeley Data]. The dataset contains features like t
 
 - **models**: Contains all the trained model [DNN, LR, DT, XG] 
 
-- **notebooks**: Contain all the notebooks [EDA and modelling]
+- **notebooks**: Contain all the notebooks -- [Kaggle Notebook](https://www.kaggle.com/sumitm004/malicious-webpage-classifier-using-dnn-pytorch)
 
 - **src**: Contains all the code </br>
 	* config.py - Configuration file to config the whole project
