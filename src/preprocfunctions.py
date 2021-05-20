@@ -101,7 +101,7 @@ def cleanhtml(raw_html):
 
 def get_content(url):
     page = requests.get(url, stream = True)
-    soup = bs(page.content, features="html")
+    soup = bs(page.content, features="lxml")
     text = soup.get_text()
     # print (soup)
 
@@ -128,7 +128,7 @@ def get_content(url):
 #deobf
 
 def deobf():
-    os.system('python3 jsado.py html_file.html function_to_hack [nExec:1] [useJB] [useS] [injStart]')
+    os.system('python3 src/jsado.py html_file.html function_to_hack [nExec:1] [useJB] [useS] [injStart]')
 
     f1 = codecs.open("html_file.html", 'r')
     html_file = f1.read()
