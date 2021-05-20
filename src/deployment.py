@@ -104,8 +104,6 @@ def deploy():
 
     js_len, content = preprocfunctions.get_content(data_dict['url'])
 
-    data_dict['js_obf_len'] = preprocfunctions.deobf()
-
     data_dict['content'] = content
     
     data_dict['js_len'] = js_len
@@ -118,6 +116,8 @@ def deploy():
 
     _, net_type = preprocfunctions.network_type(data_dict['ip_add'])
     data_dict['net_type'] = net_type
+    
+    data_dict['js_obf_len'] = preprocfunctions.deobf()
 
     df = pd.DataFrame([data_dict])
     df['label'] = [0]
@@ -205,8 +205,6 @@ def deploy():
         put_row([
             put_image('https://cdn4.iconfinder.com/data/icons/security-multi-color/128/Security-47-512.png')
         ])
-
-    return data_dict
 
 # a = deploy()
 # print (a)
