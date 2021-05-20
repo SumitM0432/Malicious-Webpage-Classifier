@@ -69,10 +69,10 @@ New models can be trained using the `train.py` with different folds. </br>
 `python3 train.py --folds [fold] --model [model name]`
 - folds - [0, 4]
 - model - [xg, dt, lr, dnn]
-> 1. dnn - Deep Neural Network
-> 2. xg - XGBoost
-> 3. dt - Decision Tree
-> 4. lr - Logistic Regression
+> dnn - Deep Neural Network, 
+> xg - XGBoost, 
+> dt - Decision Tree, 
+> lr - Logistic Regression
 
 ###### Predictions
 Predictions can be made using the trained models. This can be done using the `predict.py`.
