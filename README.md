@@ -60,4 +60,39 @@ A total of four models are used in the project named, **XGBoost**, **Logistic Re
 
 ## How to Run
 
+#### Using Command Prompt
+> Run these commands in the `src` Directory
 
+###### Training
+New models can be trained using the `train.py` with different folds. </br>
+
+`python3 train.py --folds [fold] --model [model name]`
+- folds - [0, 4]
+- model - [xg, dt, lr, dnn]
+> 1. dnn - Deep Neural Network
+> 2. xg - XGBoost
+> 3. dt - Decision Tree
+> 4. lr - Logistic Regression
+
+###### Predictions
+Predictions can be made using the trained models. This can be done using the `predict.py`.
+
+`python3 predict.py --path [path] --model [model]`
+- path - path of the testing file
+- model - The trained model in the `models` folder [xg, dt, dnn, lr]
+
+#### Deployment
+Run the `src/deployment.py` and go to the url 'http://localhost:5000/maliciousWPC'
+
+<img src=https://user-images.githubusercontent.com/46062583/119026748-26769900-b9c3-11eb-97ba-092bf47ad464.png width="900" height="500"/>
+
+> URL &emsp; : &emsp;URL of the web page. </br>
+> Geographical Location &emsp; : &emsp; geo Loc of the web page [Choose 'other' if don't know -- The code will extract it] </br>
+> IP Address &emsp; : &emsp; IP Address of the web page [Leave as it is if don't know -- The code will extract it] </br>
+> Top Level Domain &emsp; : &emsp; TLD of the web page [Choose 'other' if don't know -- The code will extract it] </br>
+> Prediction models &emsp; : &emsp; The model to be used for prediction. </br>
+
+<img src=https://user-images.githubusercontent.com/46062583/119026744-24143f00-b9c3-11eb-838a-35df5f362121.png width="900" height="500"/>
+
+
+> The output page contains the 'WHO IS' Information of the webpage and the prediction *Malicious* or *Benign* 
