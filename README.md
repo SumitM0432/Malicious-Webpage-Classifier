@@ -95,4 +95,4 @@ Run the `src/deployment.py` and go to the url 'http://localhost:5000/maliciousWP
 <img src=https://user-images.githubusercontent.com/46062583/119026744-24143f00-b9c3-11eb-838a-35df5f362121.png width="900" height="500"/>
 
 
-> The output page contains the 'WHO IS' Information of the webpage and the prediction *Malicious* or *Benign* 
+> The output page contains the 'WHO IS' Information of the webpage and the prediction *Malicious* or *Benign*.
