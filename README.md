@@ -59,6 +59,7 @@ A total of four models are used in the project named, **XGBoost**, **Logistic Re
 > The Notebook containing the modelling and the results are given in the `notebooks` folder.
 
 ## How to Run
+> Add the folder path on your system in the `config.py` file.
 
 #### Using Command Prompt
 > Run these commands in the `src` Directory
