@@ -2,19 +2,25 @@ from pywebio.input import *
 from pywebio.output import *
 from pywebio.platform.flask import webio_view
 import pandas as pd
-from flask import Flask, send_from_directory
+from flask import Flask, redirect, send_from_directory
+import webbrowser
 import joblib
 import whois
 from PIL.Image import open
 import torch
 from torch.utils.data import DataLoader
-import config
-import preprocfunctions
-import dataset
-import model_dispatcher
-from preprocessing import preprocessing
+from config_loader import config
+from src import domain_functions
+import src.dataset as dataset
+from scripts import model_dispatcher
+from scripts.preprocessing import data_preprocessing
 
 app = Flask(__name__)
+
+@app.route('/')
+def root():
+    # Redirect to /maliciousWPC
+    return redirect('/maliciousWPC')
 
 def deploy():
     data_dict = input_group("Malicious Webpage Classifier",[
@@ -91,40 +97,40 @@ def deploy():
     ])
 
     if data_dict['tld'] == 'other':
-        data_dict['tld'] = preprocfunctions.topld(data_dict['url'])
+        data_dict['tld'] = domain_functions.topld(data_dict['url'])
     
     if data_dict['ip_add'] == '':
-        data_dict['ip_add'] = preprocfunctions.ip_address(data_dict['url'])
+        data_dict['ip_add'] = domain_functions.ip_address(data_dict['url'])
     
     if data_dict['geo_loc'] == 'other':
-        data_dict['geo_loc'] = preprocfunctions.geo_location(data_dict['ip_add'])
+        data_dict['geo_loc'] = domain_functions.geo_location(data_dict['ip_add'])
     
-    data_dict['url_len'] = preprocfunctions.url_len(data_dict['url'])
-    data_dict['who_is'] = preprocfunctions.whois_status(data_dict['ip_add'], data_dict['url'])
+    data_dict['url_len'] = domain_functions.url_len(data_dict['url'])
+    data_dict['who_is'] = domain_functions.whois_status(data_dict['ip_add'], data_dict['url'])
 
-    js_len, content = preprocfunctions.get_content(data_dict['url'])
+    js_len, content = domain_functions.get_content(data_dict['url'])
 
     data_dict['content'] = content
     
     data_dict['js_len'] = js_len
     
-    data_dict['special_char'] = preprocfunctions.count_special(data_dict['content'])
+    data_dict['special_char'] = domain_functions.count_special(data_dict['content'])
 
-    data_dict['https'] = preprocfunctions.http_https(data_dict['url'])
+    data_dict['https'] = domain_functions.http_https(data_dict['url'])
 
     data_dict['content_len'] = len(data_dict['content'])
 
-    _, net_type = preprocfunctions.network_type(data_dict['ip_add'])
+    _, net_type = domain_functions.network_type(data_dict['ip_add'])
     data_dict['net_type'] = net_type
     
-    data_dict['js_obf_len'] = preprocfunctions.deobf()
+    data_dict['js_obf_len'] = domain_functions.deobf()
 
     df = pd.DataFrame([data_dict])
     df['label'] = [0]
     model = df.model.values[0]
     df.drop(columns = ['model'], inplace = True)
 
-    df = preprocessing(df)
+    df = data_preprocessing(df)
     ez = {
             'XGBoost':'xg',
             'Decision Tree':'dt',
@@ -137,17 +143,17 @@ def deploy():
     if model in ['xg', 'lr', 'dt']:
 
         X_test = df.drop(columns = ['label'])
-
-        mod = joblib.load(config.MODEL_OUTPUT + str(model) + '.bin')
         
+        mod = joblib.load(config['OUTPUTS']['MODEL_OUTPUT'] + "/" + str(model) + ".bin")
+
         predictions = mod.predict(X_test)
     
     elif model == 'dnn':
 
         model = model_dispatcher.dnn()
-        model.to(config.DEVICE)
+        model.to(config['DEVICE'])
 
-        model.load_state_dict(torch.load(config.MODEL_OUTPUT + '/dnn.pth'))
+        model.load_state_dict(torch.load(config['OUTPUTS']['MODEL_OUTPUT'] + '/dnn.pth'))
 
         cls = dataset.MaliciousBenignData(df)
         
@@ -164,7 +170,7 @@ def deploy():
 
         with torch.no_grad():
             for X_test, _ in df_test:
-                X_test = X_test.to(config.DEVICE)
+                X_test = X_test.to(config['DEVICE'])
 
                 predictions = model(X_test.float())
                 pred = torch.round(torch.sigmoid(predictions))
@@ -213,4 +219,7 @@ app.add_url_rule('/maliciousWPC', 'webio_view', webio_view(deploy),
                 methods = ['GET', 'POST', 'OPTIONS'])
 
 if __name__ == '__main__':
-    app.run(host = 'Localhost', port = '5000')
+    webbrowser.open("http://127.0.0.1:5000/maliciousWPC")
+    app.run(host='127.0.0.1', port=5000, threaded=True)
+
+

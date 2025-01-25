@@ -1,6 +1,6 @@
 BATCH_SIZE: 128
 EPOCHS: 20
-DEVICE: "cuda:0" # Replace with "cpu" if GPU is not available
+DEVICE: 'cpu' # "cuda:0" # Replace with "cpu" if GPU is not available
 LEARNING_RATE: 2e-5
 
 DATASET_PATH:

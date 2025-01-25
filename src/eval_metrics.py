@@ -14,7 +14,7 @@ def metric_scores(y_true, y_pred):
     cls_report = metrics.classification_report(y_true, y_pred)
     
     print ("")
-    print (f"Accuracy : {metrics.accuracy_score(y_true, y_pred)*100 : .3f} %") 
+    print (f"Accuracy : {metrics.accuracy_score(y_true, y_pred)*100 : .3f} % | F1 Score : {metrics.f1_score(y_true, y_pred) : .3f} % ") 
     print ("")
     print ("Classification Report : ")
     print (cls_report)

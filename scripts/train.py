@@ -16,7 +16,7 @@ from preprocessing import data_preprocessing
 
 warnings.filterwarnings('ignore')
 
-def create_dataloader(df, batch_size = config['BATCH_SIZE']):
+def create_dataloader(df, batch_size = int(config['BATCH_SIZE'])):
     cls = dataset.MaliciousBenignData(df)
     return DataLoader(
         cls,
@@ -29,8 +29,7 @@ def binary_acc(predictions, y_test):
     acc = torch.round((correct/y_test.shape[0])*100)
     return acc
 
-
-def train_model(model, device, data_loader, optimizer, criterian, epochs_n = config['EPOCHS']+1):
+def train_model(model, device, data_loader, optimizer, criterian, epochs_n = int(config['EPOCHS'])+1):
     # Putting the model in training mode
     model.train()
 
@@ -127,14 +126,14 @@ def run(folds, models):
         )
 
     elif models == 'dnn':
-        df_train_loader = create_dataloader(df_train, batch_size = config['BATCH_SIZE'])
+        df_train_loader = create_dataloader(df_train, batch_size = int(config['BATCH_SIZE']))
         df_valid_loader = create_dataloader(df_valid, batch_size = 1)
 
         model = model_dispatcher.dnn()
         model.to(config['DEVICE'])
 
         criterian = nn.BCEWithLogitsLoss()
-        optimizer = optim.Adam(model.parameters(), lr = config['LEARNING_RATE'])
+        optimizer = optim.Adam(model.parameters(), lr = float(config['LEARNING_RATE']))
 
         print (model)
 

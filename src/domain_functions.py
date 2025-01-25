@@ -100,10 +100,22 @@ def cleanhtml(raw_html):
   return cleantext
 
 def get_content(url):
+
+    # Checking if https or http is present
+    if not url.startswith("http://") and not url.startswith("https://"):
+        url = f"http://{url}"
+
+    # Fetching the URL content
+    try:
+        page = requests.get(url, stream=True)
+        # page.raise_for_status()  # Raise an error for HTTP errors
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching URL content: {e}")
+        return 0, None  # Return default values in case of an error
+
     page = requests.get(url, stream = True)
     soup = bs(page.content, features="lxml")
     text = soup.get_text()
-    # print (soup)
 
     with open('html_file.html', 'w') as outFile:
         outFile.write(str(page.content))
