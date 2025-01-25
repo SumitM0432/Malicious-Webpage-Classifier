@@ -1,1 +1,3 @@
-/src/processing_fns/
+src/processing_fns/
+
+__pycache__/
