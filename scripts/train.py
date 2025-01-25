@@ -1,7 +1,4 @@
 import os
-import sys
-from config_loader import config
-import yaml
 import joblib
 import pandas as pd
 import torch
@@ -11,10 +8,10 @@ from torch.utils.data import DataLoader
 import argparse
 import warnings
 import model_dispatcher
+from config_loader import config
 import src.dataset as dataset
-
 from src.cross_val import create_folds
-from src.Metrics import metric_scores
+from src.eval_metrics import metric_scores
 from preprocessing import data_preprocessing
 
 warnings.filterwarnings('ignore')
@@ -87,13 +84,16 @@ def eval_model(model, device, data_loader):
 
 def run(folds, models):
 
+    print ("INGESTING THE DATA")
     # Importing the dataset
-    df = pd.read_csv(config['paths']['TRAINING_FILE'])
+    df = pd.read_csv(config['DATASET_PATH']['TRAINING_FILE'])
     df.drop(columns = "Unnamed: 0", inplace = True)
 
+    print ("RUNNING DATA PREPROCESSING")
     # Preprocessing
     df = data_preprocessing(df)
 
+    print ("CREATING FOLDS")
     # Cross Validation
     df = create_folds(df)
 
@@ -111,17 +111,20 @@ def run(folds, models):
         X_valid = df_valid.drop(columns = ['label'])
         y_valid = df_valid.label.values
 
+        print ("TRAINING THE MODEL...")
         clf = model_dispatcher.models[models]
         clf.fit(X_train, y_train)
 
         preds = clf.predict(X_valid)
 
+        print ("EVALUATING THE PERFORMANCE")
+        metric_scores(y_valid, preds)
+
+        print ("SAVING THE MODEL :)")
         joblib.dump(
             clf,
-            os.path.join(config['paths']['MODEL_OUTPUT'], f"{models}.bin")
+            os.path.join(config['OUTPUTS']['MODEL_OUTPUT'], f"{models}.bin")
         )
-
-        metric_scores(y_valid, preds)
 
     elif models == 'dnn':
         df_train_loader = create_dataloader(df_train, batch_size = config['BATCH_SIZE'])
@@ -135,13 +138,16 @@ def run(folds, models):
 
         print (model)
 
+        print ("TRAINING THE MODEL")
         train_model(model, config['DEVICE'], df_train_loader, optimizer, criterian)
 
         y_valid, preds = eval_model(model, config['DEVICE'], df_valid_loader)
 
-        torch.save(model.state_dict(), config['paths']['MODEL_OUTPUT'] + '/dnn.pth')
-
+        print ("TESTING THE MODEL")
         metric_scores(y_valid, preds)
+
+        print ("SAVING THE MODEL :)")
+        torch.save(model.state_dict(), config['OUTPUTS']['MODEL_OUTPUT'] + '/dnn.pth')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

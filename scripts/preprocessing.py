@@ -1,9 +1,9 @@
-from config_loader import config
-import pickle
 import joblib
+import warnings
 import pandas as pd
-
+from config_loader import config
 from src.domain_functions import *
+warnings.filterwarnings('ignore')
 
 # Loading the encoders
 who_is_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['who_is_encoder'])
