@@ -1,7 +1,8 @@
-from Config import config
+import pickle
 import pandas as pd
 from src.domain_functions import *
-import pickle
+from src.config_loader import load_config
+config = load_config()
 
 pkl_file = open(config['encoders']['who_is_en'], 'rb')
 who_is_en = pickle.load(pkl_file) 
@@ -18,21 +19,21 @@ geo_loc_en = pickle.load(pkl_file)
 pkl_file = open(config['encoders']['https_en'], 'rb')
 https_en = pickle.load(pkl_file)
 
-pkl_file = open(config['encoders']['special_char_ss'], 'rb')
+pkl_file = open(config['scalers']['special_char_ss'], 'rb')
 special_char_ss = pickle.load(pkl_file)
 
-pkl_file = open(config['encoders']['content_len_ss'], 'rb')
+pkl_file = open(config['scalers']['content_len_ss'], 'rb')
 content_len_ss = pickle.load(pkl_file)
 
-def preprocessing(df):
+def data_preprocessing(df):
     
     # Network type
-    df['Network']= df['ip_add'].apply(lambda x : domain_functions.network_type(x))
+    df['Network']= df['ip_add'].apply(lambda x : network_type(x))
     df['net_part'], df['net_type'] = zip(*df.Network)
     df.drop(columns = ['Network'], inplace = True)
 
     # Counting Special Chars
-    df['special_char'] = df['content'].apply(lambda x: domain_functions.count_special(x))
+    df['special_char'] = df['content'].apply(lambda x: count_special(x))
 
     # Content len
     df["content_len"] = df['content'].apply(lambda x: len(x))

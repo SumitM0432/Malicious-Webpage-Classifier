@@ -1,12 +1,7 @@
 import os, sys
-# Setting current path
-script_dir = os.path.dirname(os.path.abspath(__file__)) # Current Folder
-project_root = os.path.abspath(os.path.join(script_dir, "..")) # Project Folder
+current_dir = os.path.dirname(os.path.abspath(__file__)) # Current Folder
+project_root = os.path.abspath(os.path.join(current_dir, "..")) # Project Folder
 sys.path.insert(0, project_root) # Setting the Project Folder as a priority to find modules
-config_path = os.path.join(script_dir, "..", "config", "config.yaml") # Config folder
-
-with open(config_path, "r") as file:
-    config = yaml.safe_load(file)
 
 import yaml
 import joblib
@@ -17,15 +12,17 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 import argparse
 import warnings
+import model_dispatcher
+from src.config_loader import load_config
+import src.dataset
+from src.cross_val import create_folds
+from src.Metrics import metric_scores
+from preprocessing import data_preprocessing
+
+config = load_config()
 warnings.filterwarnings('ignore')
 
-from src.cross_val import create_folds
-import src.dataset
-
-# from preprocessing import preprocessing
-# import model_dispatcher
-# import Metrics
-
+print(torch.__version__)
 
 
 # def create_dataloader(df, batch_size = config['BATCH_SIZE']):
@@ -101,7 +98,7 @@ import src.dataset
 #     df.drop(columns = "Unnamed: 0", inplace = True)
 
 #     # Preprocessing
-#     df = preprocessing(df)
+#     df = data_preprocessing(df)
 
 #     # Cross Validation
 #     df = cross_val.create_folds(df)

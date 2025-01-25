@@ -7,10 +7,10 @@ pywebio == 1.2.3
 requests == 2.25.1
 scikit-learn == 0.24.1
 seaborn == 0.11.1
-torch == 1.8.0
+torch == 2.5.1
 xgboost == 1.4.2
 joblib == 1.0.1
-matplotlib == 3.3.4
+matplotlib
 argparse == 1.4.0
 tld == 0.12.5
 beautifulsoup4 == 4.9.3

@@ -45,4 +45,4 @@ class dnn(nn.Module):
         t = F.relu(t)
         t = self.out(t)
 
-        return t
+        return (t)
