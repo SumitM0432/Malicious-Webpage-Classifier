@@ -1,38 +1,38 @@
-import config
+from Config import config
 import pandas as pd
-import preprocfunctions
+from src.domain_functions import *
 import pickle
 
-pkl_file = open(config.who_is_en, 'rb')
+pkl_file = open(config['encoders']['who_is_en'], 'rb')
 who_is_en = pickle.load(pkl_file) 
 
-pkl_file = open(config.net_type_en, 'rb')
+pkl_file = open(config['encoders']['net_type_en'], 'rb')
 net_type_en = pickle.load(pkl_file) 
 
-pkl_file = open(config.tld_en, 'rb')
+pkl_file = open(config['encoders']['tld_en'], 'rb')
 tld_en = pickle.load(pkl_file) 
 
-pkl_file = open(config.geo_loc_en, 'rb')
+pkl_file = open(config['encoders']['geo_loc_en'], 'rb')
 geo_loc_en = pickle.load(pkl_file)
 
-pkl_file = open(config.https_en, 'rb')
+pkl_file = open(config['encoders']['https_en'], 'rb')
 https_en = pickle.load(pkl_file)
 
-pkl_file = open(config.special_char_ss, 'rb')
+pkl_file = open(config['encoders']['special_char_ss'], 'rb')
 special_char_ss = pickle.load(pkl_file)
 
-pkl_file = open(config.content_len_ss, 'rb')
+pkl_file = open(config['encoders']['content_len_ss'], 'rb')
 content_len_ss = pickle.load(pkl_file)
 
 def preprocessing(df):
     
     # Network type
-    df['Network']= df['ip_add'].apply(lambda x : preprocfunctions.network_type(x))
+    df['Network']= df['ip_add'].apply(lambda x : domain_functions.network_type(x))
     df['net_part'], df['net_type'] = zip(*df.Network)
     df.drop(columns = ['Network'], inplace = True)
 
     # Counting Special Chars
-    df['special_char'] = df['content'].apply(lambda x: preprocfunctions.count_special(x))
+    df['special_char'] = df['content'].apply(lambda x: domain_functions.count_special(x))
 
     # Content len
     df["content_len"] = df['content'].apply(lambda x: len(x))
@@ -56,4 +56,4 @@ def preprocessing(df):
 
     df = df[['url_len', 'geo_loc', 'tld', 'who_is', 'https', 'js_len', 'js_obf_len', 'label', 'net_type', 'special_char', 'content_len']]
 
-    return df
+    return (df)

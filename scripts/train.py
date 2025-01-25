@@ -1,30 +1,39 @@
-import os
+import os, sys
+# Setting current path
+script_dir = os.path.dirname(os.path.abspath(__file__)) # Current Folder
+project_root = os.path.abspath(os.path.join(script_dir, "..")) # Project Folder
+sys.path.insert(0, project_root) # Setting the Project Folder as a priority to find modules
+config_path = os.path.join(script_dir, "..", "config", "config.yaml") # Config folder
+
+with open(config_path, "r") as file:
+    config = yaml.safe_load(file)
+
 import yaml
 import joblib
 import pandas as pd
-import cross_val
-from preprocessing import preprocessing
-from torch.utils.data import DataLoader
-import model_dispatcher
-import dataset
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import Metrics
-import warnings
+from torch.utils.data import DataLoader
 import argparse
+import warnings
 warnings.filterwarnings('ignore')
 
-with open("Config/config.yaml", "r") as file:
-    config = yaml.safe_load(file)
+from src.cross_val import create_folds
+import src.dataset
 
-# def create_dataloader(df, batch_size):
+# from preprocessing import preprocessing
+# import model_dispatcher
+# import Metrics
+
+
+
+# def create_dataloader(df, batch_size = config['BATCH_SIZE']):
 #     cls = dataset.MaliciousBenignData(df)
 #     return DataLoader(
 #         cls,
 #         batch_size = batch_size,
-#         num_workers = 0
-#     )
+#         num_workers = 0)
 
 # def binary_acc(predictions, y_test):
 #     y_pred = torch.round(torch.sigmoid(predictions))
@@ -37,7 +46,7 @@ with open("Config/config.yaml", "r") as file:
 #     # Putting the model in training mode
 #     model.train()
 
-#     for epoch in range(1, config.EPOCHS+1):
+#     for epoch in range(1, config['EPOCHS']+1):
 #         epoch_loss = 0
 #         epoch_acc = 0
 #         for X, y in data_loader:
