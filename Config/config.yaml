@@ -3,19 +3,22 @@ EPOCHS: 20
 DEVICE: "cuda:0" # Replace with "cpu" if GPU is not available
 LEARNING_RATE: 2e-5
 
-paths:
-  base_path: "" # Add your current folder path
-  TRAINING_FILE: "input/Webpages_Classification_train_data.csv"
-  TESTING_FILE: "input/Webpages_Classification_test_data.csv"
-  MODEL_OUTPUT: "models/"
+DATASET_PATH:
+  TRAINING_FILE: "data/Webpages_Classification_train_data.csv"
+  TESTING_FILE: "data/Webpages_Classification_test_data.csv"
 
-encoders:
-  who_is_en: "le_ss/who_is_encoder.pkl"
-  geo_loc_en: "le_ss/geo_loc_encoder.pkl"
-  https_en: "le_ss/https_encoder.pkl"
-  net_type_en: "le_ss/net_type_encoder.pkl"
-  tld_en: "le_ss/tld_encoder.pkl"
+OUTPUTS:
+  MODEL_OUTPUT: "output/models"
+  ENCODERS: "output/encoders"
+  SCALERS: "output/scalers"
 
-scalers:
-  special_char_ss: "le_ss/special_char_ss.pkl"
-  content_len_ss: "le_ss/content_len_ss.pkl"
+ENCODERS_SCALERS:
+  ECODER_OBJECTS : 
+    who_is_encoder : who_is_encoder.pkl
+    geo_loc_encoder : geo_loc_encoder.pkl
+    https_encoder : https_encoder.pkl
+    net_type_encoder : net_type_encoder.pkl
+    tld_encoder : tld_encoder.pkl
+  SCALER_OBJECTS :
+    special_char_ss : special_char_ss.pkl
+    content_len_ss : content_len_ss.pkl

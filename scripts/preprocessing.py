@@ -1,29 +1,20 @@
+from config_loader import config
 import pickle
+import joblib
 import pandas as pd
+
 from src.domain_functions import *
-from src.config_loader import load_config
-config = load_config()
 
-pkl_file = open(config['encoders']['who_is_en'], 'rb')
-who_is_en = pickle.load(pkl_file) 
+# Loading the encoders
+who_is_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['who_is_encoder'])
+net_type_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['net_type_encoder'])
+tld_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['tld_encoder'])
+geo_loc_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['geo_loc_encoder'])
+https_en = joblib.load(config['OUTPUTS']['ENCODERS'] + "/"+ config['ENCODERS_SCALERS']['ECODER_OBJECTS']['https_encoder'])
 
-pkl_file = open(config['encoders']['net_type_en'], 'rb')
-net_type_en = pickle.load(pkl_file) 
-
-pkl_file = open(config['encoders']['tld_en'], 'rb')
-tld_en = pickle.load(pkl_file) 
-
-pkl_file = open(config['encoders']['geo_loc_en'], 'rb')
-geo_loc_en = pickle.load(pkl_file)
-
-pkl_file = open(config['encoders']['https_en'], 'rb')
-https_en = pickle.load(pkl_file)
-
-pkl_file = open(config['scalers']['special_char_ss'], 'rb')
-special_char_ss = pickle.load(pkl_file)
-
-pkl_file = open(config['scalers']['content_len_ss'], 'rb')
-content_len_ss = pickle.load(pkl_file)
+# Loading the scalers
+special_char_ss = joblib.load(config['OUTPUTS']['SCALERS'] + "/"+ config['ENCODERS_SCALERS']['SCALER_OBJECTS']['special_char_ss'])
+content_len_ss = joblib.load(config['OUTPUTS']['SCALERS'] + "/"+ config['ENCODERS_SCALERS']['SCALER_OBJECTS']['content_len_ss'])
 
 def data_preprocessing(df):
     

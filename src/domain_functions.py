@@ -1,11 +1,11 @@
+import os
+import codecs
+import re
 import whois
 import socket
 import requests
 from tld import get_tld
 from urllib.parse import urlparse
-import os
-import codecs
-import re
 from bs4 import BeautifulSoup as bs
 import requests
 import http.client

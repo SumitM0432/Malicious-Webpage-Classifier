@@ -1,36 +1,43 @@
+import os, sys
+current_dir = os.path.dirname(os.path.abspath(__file__)) # Current Folder
+project_root = os.path.abspath(os.path.join(current_dir, "..")) # Project Folder
+sys.path.insert(0, project_root) # Setting the Project Folder as a priority to find modules
+
 import torch
-import dataset
+import src.dataset as dataset
 import joblib
-import config
-from preprocessing import preprocessing
+from preprocessing import data_preprocessing
 import pandas as pd
 import argparse
-import Metrics
+from src.Metrics import metric_scores
 import model_dispatcher
 from torch.utils.data import DataLoader
+from src.config_loader import load_config
+config = load_config()
+
 
 def predict(path, model):
 
     df = pd.read_csv(path)
 
-    df = preprocessing(df)
+    df = data_preprocessing(df)
 
     if model in ['xg', 'lr', 'dt']:
 
         X_test = df.drop(columns = ['label'])
         y_test = df.label.values
 
-        mod = joblib.load(config.MODEL_OUTPUT + str(model) + '.bin')
+        mod = joblib.load(config['paths']['MODEL_OUTPUT'] + str(model) + '.bin')
         
         predictions = mod.predict(X_test)
 
-        Metrics.metric_scores(y_test, predictions)
+        metric_scores(y_test, predictions)
     
     elif model == 'dnn':
         model = model_dispatcher.dnn()
-        model.to(config.DEVICE)
+        model.to(config['DEVICE'])
 
-        model.load_state_dict(torch.load(config.MODEL_OUTPUT + '/dnn.pth'))
+        model.load_state_dict(torch.load(config['paths']['MODEL_OUTPUT'] + '/dnn.pth'))
 
         cls = dataset.MaliciousBenignData(df)
         
@@ -48,7 +55,7 @@ def predict(path, model):
 
         with torch.no_grad():
             for X_test, y_test in df_test:
-                X_test = X_test.to(config.DEVICE)
+                X_test = X_test.to(config['DEVICE'])
 
                 predictions = model(X_test.float())
                 pred = torch.round(torch.sigmoid(predictions))
@@ -60,7 +67,7 @@ def predict(path, model):
             y_test_al = [ele[0] for ele in y_test_al]
             y_pred = [int(ele[0][0]) for ele in y_pred]
 
-        Metrics.metric_scores(y_test_al, y_pred)
+        metric_scores(y_test_al, y_pred)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

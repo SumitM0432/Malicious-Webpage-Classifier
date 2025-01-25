@@ -1,2 +1,4 @@
 src/processing_fns/
 __pycache__/
+*.csv
+*.DS_Store
