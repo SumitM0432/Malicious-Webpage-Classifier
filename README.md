@@ -53,6 +53,7 @@ The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gd
   * dataset.txt - Link to download the dataset and paste it into the input folder
  
 - **deployment**: Contains the deployment code for the project
+  * config_loader.py - code to ingest the configs in the files
   * deployment.py - deployment code on localhost using PyWebIO and Flask
 
 - **output/encoders and scalers**: Contains all the saved Label Encoder and Standard Scaler files for preprocessing </br>
@@ -71,33 +72,18 @@ The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gd
 
 
 - **scripts**: Contains all the code used for the main scripts </br>
-	* eval_metrics.py - Evaluation Metrics for the training and testing
-	* cross_val.py - Crossvalidation code [StratifiedKFold]
-	* dataset.py - Contains the code for a custom dataset for the PyTorch DNN model
+	* config_loader.py - code to ingest the configs in the files
 	* model_dispatcher.py - Contains the ML and DL models
 	* predict.py - Python file to make a prediction
 	* preprocessing.py - Python file for preprocessing the dataset for training and testing
-	* preprocfunctions.py - Contains several functions to extract the features of the dataset if a particular feature is not given
 	* train.py - Main run file
-	* deployment.py - Python file for the deployment of the project on localhost using PyWebIO and Flask
-	* jsado.py, dumper.js - Code to find the Obfuscated JS code if the feature is not given [Github](https://github.com/lucianogiuseppe/JS-Auto-DeObfuscator)
-	* processing_fns - Contains all the individual python files to extract the features
 
-
-│   ├── __init__.py
-│   ├── config_loader.py
-│   ├── cross_val.py
-│   ├── dataset.py
-│   ├── default_accuracy.py
-│   ├── domain_functions.py
-│   ├── dumper.js
-│   ├── eval_metrics.py
-└── └── jsado.py
 - **src**: Contains all the code used for the main scripts </br>
+	* config_loader.py - code to ingest the configs in the files
 	* eval_metrics.py - Evaluation Metrics for the training and testing
 	* cross_val.py - Crossvalidation code [StratifiedKFold]
 	* dataset.py - Contains the code for a custom dataset for the PyTorch DNN mode
-	* preprocfunctions.py - Contains several functions to extract the features of the dataset if a particular feature is not given
+	* domain_function.py - Contains several functions to extract the features of the dataset if a particular feature is not given
 	* jsado.py, dumper.js - Code to find the Obfuscated JS code if the feature is not given [Github](https://github.com/lucianogiuseppe/JS-Auto-DeObfuscator)
 
 - **requirement.txt**: Packages required for the project to run.
@@ -109,43 +95,47 @@ The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gd
  > The Exploration Notebook is given in the `notebooks` folder.
 
 ## Preprocessing
-The preprocessing is done on the data to make it ready for the modelling part and features engineering is done as well. First, several features are added in the dataset like the length of the content, count of the special characters in the raw content, Type of the network (A, B, C) according to the IP address. </br>
+The preprocessing is done on the data to make it ready for the modelling part and features engineering is done as well. First, several features are added to the dataset like the length of the content, count of the special characters in the raw content, and Type of the network (A, B, C) according to the IP address. </br>
 
 The Categorical features are converted into numeric values and the normalization is done on the content length and the count of the special characters using the Standard Scaler from scikit learn. Some features are removed and are not used in the training. </br>
 > The preprocessing functions and the code is given in the `src` folder.
 
 ## Models
-A total of four models are used in the project named, **XGBoost**, **Logistic Regression**, **Deep Neural Network** and **Decision Tree**. The models are trained, validated and tested using 5 fold Cross-validation set [Stratified k folds]. The structure of the models are given in the `src/model_dispatcher.py` file. The best performing model was the XGBoost Classifier followed by Deep Neural Network. The trained models are given in the models folder which can be used for predictions or can be trained again with new features. </br>
+A total of four models are used in the project named, **XGBoost**, **Logistic Regression**, **Deep Neural Network** and **Decision Tree**. The models are trained, validated and tested using 5 5-fold Cross-validation set [Stratified k folds]. The structure of the models is given in the `src/model_dispatcher.py` file. The best performing model was the XGBoost Classifier followed by Deep Neural Network. The trained models are given in the models folder which can be used for predictions or can be trained again with new features. </br>
 > The Notebook containing the modelling and the results are given in the `notebooks` folder.
 
 ## How to Run
-> Add the folder path on your system in the `config.py` file.
+#### Installing the required libraries
+> Install all the required libraries given in the requirement.txt file
+
+#### Downloading the dataset
+> Download the dataset given in the dataset.txt file and place the data in the `data/` folder
 
 #### Using Command Prompt
-> Run these commands in the `src` Directory
+> Run these commands in the main directory of the project to train the models and do prediction with deployment.
 
 ###### Training
 New models can be trained using the `train.py` with different folds. </br>
 
-`python3 train.py --folds [fold] --model [model name]`
-- folds - [0, 4]
+`python3 scripts/train.py --folds [fold] --model [model name]`
+- folds - [0, 4] </br>
 - model - [xg, dt, lr, dnn]
-> dnn - Deep Neural Network, 
-> xg - XGBoost, 
-> dt - Decision Tree, 
-> lr - Logistic Regression
+	> dnn - Deep Neural Network </br>
+	> xg - XGBoost </br>
+	> dt - Decision Tree </br>
+	> lr - Logistic Regression </br>
 
 ###### Predictions
 Predictions can be made using the trained models. This can be done using the `predict.py`.
 
-`python3 predict.py --path [path] --model [model]`
-- path - path of the testing file
-- model - The trained model in the `models` folder [xg, dt, dnn, lr]
+`python3 scripts/predict.py --path [path] --model [model]`
+- path - path of the testing data
+- model - The trained model in the `output/models` folder [xg, dt, dnn, lr]
 
 #### Deployment
-Run the `src/deployment.py` and go to the url 'http://localhost:5000/maliciousWPC'
+Run the `deployment/deployment.py`. The default browser will open the locally deployed app 'http://localhost:5000/maliciousWPC'
 
-<img src=https://user-images.githubusercontent.com/46062583/119026748-26769900-b9c3-11eb-97ba-092bf47ad464.png width="900" height="500"/>
+<img width="914" alt="main_1" src="https://github.com/user-attachments/assets/b43d8aeb-d149-402a-b361-96b656801131" />
 
 > URL &emsp; : &emsp;URL of the web page. </br>
 > Geographical Location &emsp; : &emsp; geo Loc of the web page [Choose 'other' if don't know -- The code will extract it] </br>
@@ -153,7 +143,6 @@ Run the `src/deployment.py` and go to the url 'http://localhost:5000/maliciousWP
 > Top Level Domain &emsp; : &emsp; TLD of the web page [Choose 'other' if don't know -- The code will extract it] </br>
 > Prediction models &emsp; : &emsp; The model to be used for prediction. </br>
 
-<img src=https://user-images.githubusercontent.com/46062583/119026744-24143f00-b9c3-11eb-838a-35df5f362121.png width="900" height="500"/>
-
+<img width="894" alt="main_2" src="https://github.com/user-attachments/assets/1092c70a-a3b5-40ac-987a-3994f6a72437" />
 
 > The output page contains the 'WHO IS' Information of the webpage and the prediction *Malicious* or *Benign*.
