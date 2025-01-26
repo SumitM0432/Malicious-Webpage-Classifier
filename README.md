@@ -1,34 +1,77 @@
 # Malicious-Webpage-Classifier
 
 ## Objective
-Malicious Webpages are the pages that install malware on your system that will disrupt the computer operation and gather your personal information and many worst cases. Classifying these web pages on the internet is a very important aspect to provide the user with a safe browsing experience. </br>
+Malicious web pages are designed to install malware on your system, disrupt computer operations, and, in many cases, steal personal information. Classifying these web pages is crucial for enhancing user safety and providing a secure browsing experience.
 
-The objective of this project is to classify the web pages into two categories *Malicious[Bad]* and *Benign[Good]* webpages.  Exploratory Data Analysis and Geospatial Data Analysis are done to get more insights and knowledge about the data. Features are engineered and the data is preprocessed accordingly. A total of four ML and DL models are trained. The models are **XGBoost**, **Logistic Regression**, **Decision Tree** and **Deep Neural Network**. The DNN is implemented in PyTorch and the others are implemented using scikit learn.
+This project aims to classify web pages into *Malicious[Bad]* and *Benign[Good]*. Through extensive Exploratory Data Analysis (EDA) and Geospatial Data Analysis, valuable insights were derived to understand the data better. The dataset underwent feature engineering and preprocessing to ensure the optimal performance of the models. Three Machine learning and one Deep Learning model are trained. The models are **XGBoost**, **Logistic Regression**, **Decision Tree** and **Deep Neural Network**. The Deep Neural Network is implemented in PyTorch and the others are implemented using scikit-learn.
 
 ## Dataset
-The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gdx3pkwp47/2). The dataset contains features like the raw webpage content, geographical location, javascript length, obfuscated JavaScript code of the webpage etc. The Dataset contains around 1.5 million web pages. The description of the whole dataset is given on the link provided.
+The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gdx3pkwp47/2). The dataset contains features like the raw webpage content, geographical location, javascript length, obfuscated JavaScript code of the webpage etc. The Dataset contains around 1.5 million web pages. A description of the whole dataset is provided at the link provided.
+
+## File Structure
+```
+├── config
+│   └── config.yaml
+├── data
+│   ├── dataset.txt
+│   └── tableconvert_csv_pkcsig.csv
+├── deployment
+│   ├── config_loader.py
+│   └── deployment.py
+├── notebooks
+│   ├── Exploratory Data Analysis.ipynb
+│   └── Modelling.ipynb
+├── output
+│   ├── encoders
+│   ├── models
+│   └── scalers
+├── scripts
+│   ├── __init__.py
+│   ├── config_loader.py
+│   ├── model_dispatcher.py
+│   ├── predict.py
+│   ├── preprocessing.py
+│   └── train.py
+├── src
+│   ├── __init__.py
+│   ├── config_loader.py
+│   ├── cross_val.py
+│   ├── dataset.py
+│   ├── default_accuracy.py
+│   ├── domain_functions.py
+│   ├── dumper.js
+│   ├── eval_metrics.py
+└── └── jsado.py
+```
 
 ## Files
-- **input**: Contains the input files for the project
-  * tableconvert_csv_pkcsig.csv - Contains the iso alpha3 code for the countries
-  * dataset.txt - Link to download the dataset and paste it in the input folder
+- **config**: Configuration file to config the whole project </br>
+	* config.yaml - Configuration file
 
-- **le_ss**: Contains all the saved Label Encoder and Standard Scaler file for preprocessing </br>
+- **data**: Contains the input files for the project
+  * tableconvert_csv_pkcsig.csv - Contains the iso alpha3 code for the countries
+  * dataset.txt - Link to download the dataset and paste it into the input folder
+ 
+- **deployment**: Contains the deployment code for the project
+  * deployment.py - deployment code on localhost using PyWebIO and Flask
+
+- **output/encoders and scalers**: Contains all the saved Label Encoder and Standard Scaler files for preprocessing </br>
 	* content_len_ss.pkl - Standard Scaler for content len
-	* geo_loc_encoder.pkl - Label Encoder for geo location
+	* geo_loc_encoder.pkl - Label Encoder for geolocation
 	* https_encoder.pkl - Label Encoder for HTTPS features
 	* net_type_encoder.pkl - Label Encoder for the network type
 	* special_char_ss.pkl - Standard Scaler for Special Char length
-	* tld_encoder.pkl - Label Encoder for Top Level Domain
+	* tld_encoder.pkl - Label Encoder for Top-Level Domain
 	* who_is_encoder.pkl - Label Encoder for who_is status
 
-- **models**: Contains all the trained model [DNN, LR, DT, XG] 
+- **output/models**: Contains all the trained models [DNN, LR, DT, XG] 
 
 - **notebooks**: Contain all the notebooks -- [Kaggle Notebook](https://www.kaggle.com/sumitm004/malicious-webpage-classifier-using-dnn-pytorch)
 
-- **src**: Contains all the code </br>
-	* config.py - Configuration file to config the whole project
-	* Metrics.py - Evaluation Metrics for the training and testing
+
+
+- **scripts**: Contains all the code used for the main scripts </br>
+	* eval_metrics.py - Evaluation Metrics for the training and testing
 	* cross_val.py - Crossvalidation code [StratifiedKFold]
 	* dataset.py - Contains the code for a custom dataset for the PyTorch DNN model
 	* model_dispatcher.py - Contains the ML and DL models
@@ -39,6 +82,23 @@ The data set is taken from [Mendeley Data](https://data.mendeley.com/datasets/gd
 	* deployment.py - Python file for the deployment of the project on localhost using PyWebIO and Flask
 	* jsado.py, dumper.js - Code to find the Obfuscated JS code if the feature is not given [Github](https://github.com/lucianogiuseppe/JS-Auto-DeObfuscator)
 	* processing_fns - Contains all the individual python files to extract the features
+
+
+│   ├── __init__.py
+│   ├── config_loader.py
+│   ├── cross_val.py
+│   ├── dataset.py
+│   ├── default_accuracy.py
+│   ├── domain_functions.py
+│   ├── dumper.js
+│   ├── eval_metrics.py
+└── └── jsado.py
+- **src**: Contains all the code used for the main scripts </br>
+	* eval_metrics.py - Evaluation Metrics for the training and testing
+	* cross_val.py - Crossvalidation code [StratifiedKFold]
+	* dataset.py - Contains the code for a custom dataset for the PyTorch DNN mode
+	* preprocfunctions.py - Contains several functions to extract the features of the dataset if a particular feature is not given
+	* jsado.py, dumper.js - Code to find the Obfuscated JS code if the feature is not given [Github](https://github.com/lucianogiuseppe/JS-Auto-DeObfuscator)
 
 - **requirement.txt**: Packages required for the project to run.
 
