@@ -106,10 +106,10 @@ A total of four models are used in the project named, **XGBoost**, **Logistic Re
 
 ## How to Run
 #### Installing the required libraries
-> Install all the required libraries given in the requirement.txt file
+> Install all the required libraries given in the requirement.txt file.
 
 #### Downloading the dataset
-> Download the dataset given in the dataset.txt file and place the data in the `data/` folder
+> Download the dataset given in the dataset.txt file and place the data in the `data/` folder.
 
 #### Using Command Prompt
 > Run these commands in the main directory of the project to train the models and do prediction with deployment.
